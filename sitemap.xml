@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Replace https://REPLACE-WITH-YOUR-DOMAIN.com with the real production domain once one is registered, then resubmit this file in Google Search Console. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://REPLACE-WITH-YOUR-DOMAIN.com/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

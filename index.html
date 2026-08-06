@@ -8,12 +8,53 @@
 <meta property="og:title" content="D & N Custom Upholstery & Furniture Refinishing">
 <meta property="og:description" content="Toronto's atelier for fine upholstery, restoration & custom furniture. Hand-finished craftsmanship, by appointment.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="assets/img/og-image.png">
+<!-- og:url / canonical intentionally omitted: set to the real production domain once one is registered -->
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#17130f">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "name": "D & N Custom Upholstery & Furniture Refinishing",
+  "image": "assets/img/og-image.png",
+  "telephone": "+1-416-243-5451",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "1160 Weston Rd",
+    "addressLocality": "Toronto",
+    "addressRegion": "ON",
+    "postalCode": "M6M 4P4",
+    "addressCountry": "CA"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 43.6871589,
+    "longitude": -79.4902339
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+    "opens": "09:00",
+    "closes": "18:00"
+  },
+  "areaServed": "Greater Toronto Area",
+  "makesOffer": [
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom Reupholstery" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Furniture Refinishing & Restoration" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom-Made Furniture" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cabinetry" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Flooring" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Drapery & Soft Furnishings" } }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -338,24 +379,33 @@
       </div>
 
       <div class="quote-carousel reveal" id="quoteCarousel">
-        <div class="quote-track" id="quoteTrack">
-          <blockquote class="quote-slide">
-            <p>&ldquo;They didn't just recover our sofa — they brought back a piece of our family's history. The craftsmanship is on another level.&rdquo;</p>
-            <cite>Homeowner, Roncesvalles Village</cite>
-          </blockquote>
-          <blockquote class="quote-slide">
-            <p>&ldquo;Our go-to workshop for client projects. Meticulous work, honest timelines, and finishes that hold up.&rdquo;</p>
-            <cite>Interior Designer, Toronto</cite>
-          </blockquote>
-          <blockquote class="quote-slide">
-            <p>&ldquo;The frame looked ready for the curb. It came back looking — and feeling — better than new.&rdquo;</p>
-            <cite>Homeowner, Weston-Pellam Park</cite>
-          </blockquote>
-          <blockquote class="quote-slide">
-            <p>&ldquo;From cabinetry to a full reupholstery job, they handled everything in-house with real attention to detail.&rdquo;</p>
-            <cite>Homeowner, Etobicoke</cite>
-          </blockquote>
+        <div class="quote-viewport">
+          <button type="button" class="quote-arrow quote-prev" id="quotePrev" aria-label="Previous reflection">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+          </button>
+          <div class="quote-track" id="quoteTrack" role="group" aria-roledescription="carousel" aria-label="Client reflections">
+            <blockquote class="quote-slide">
+              <p>&ldquo;They didn't just recover our sofa — they brought back a piece of our family's history. The craftsmanship is on another level.&rdquo;</p>
+              <cite>Homeowner, Roncesvalles Village</cite>
+            </blockquote>
+            <blockquote class="quote-slide">
+              <p>&ldquo;Our go-to workshop for client projects. Meticulous work, honest timelines, and finishes that hold up.&rdquo;</p>
+              <cite>Interior Designer, Toronto</cite>
+            </blockquote>
+            <blockquote class="quote-slide">
+              <p>&ldquo;The frame looked ready for the curb. It came back looking — and feeling — better than new.&rdquo;</p>
+              <cite>Homeowner, Weston-Pellam Park</cite>
+            </blockquote>
+            <blockquote class="quote-slide">
+              <p>&ldquo;From cabinetry to a full reupholstery job, they handled everything in-house with real attention to detail.&rdquo;</p>
+              <cite>Homeowner, Etobicoke</cite>
+            </blockquote>
+          </div>
+          <button type="button" class="quote-arrow quote-next" id="quoteNext" aria-label="Next reflection">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
         </div>
+        <div class="visually-hidden" aria-live="polite" id="quoteAnnounce"></div>
         <div class="quote-dots" id="quoteDots"></div>
       </div>
     </div>
@@ -468,6 +518,43 @@
   </div>
 </footer>
 
+<!-- ============ CHAT ASSISTANT ============ -->
+<div class="chat-widget" id="chatWidget">
+  <div class="chat-panel" id="chatPanel" role="dialog" aria-modal="false" aria-labelledby="chatTitle" hidden>
+    <header class="chat-header">
+      <div class="chat-header-info">
+        <span class="chat-avatar">D&amp;N</span>
+        <div>
+          <p class="chat-title" id="chatTitle">Atelier Assistant</p>
+          <p class="chat-status"><span class="chat-dot"></span> Automated &middot; usually replies instantly</p>
+        </div>
+      </div>
+      <button type="button" class="chat-close" id="chatClose" aria-label="Close chat">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </header>
+
+    <div class="chat-messages" id="chatMessages" role="log" aria-live="polite" aria-relevant="additions"></div>
+
+    <div class="chat-quick-replies" id="chatQuickReplies"></div>
+
+    <form class="chat-input-row" id="chatForm">
+      <input type="text" id="chatInput" placeholder="Ask about services, hours, pricing…" autocomplete="off" aria-label="Type your message" maxlength="400">
+      <button type="submit" aria-label="Send message">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z" stroke-linejoin="round"/></svg>
+      </button>
+    </form>
+    <p class="chat-disclaimer">Automated assistant, not a live person &middot; for anything urgent call <a href="tel:+14162435451">(416) 243-5451</a></p>
+  </div>
+
+  <button type="button" class="chat-launcher" id="chatLauncher" aria-expanded="false" aria-controls="chatPanel" aria-label="Open chat with the D&N Atelier Assistant">
+    <svg class="chat-icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-5 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" stroke-linejoin="round"/><path d="M7.5 9.5h9M7.5 13h6"/></svg>
+    <svg class="chat-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    <span class="chat-launcher-badge" id="chatBadge">1</span>
+  </button>
+</div>
+
 <script src="assets/js/main.js"></script>
+<script src="assets/js/chatbot.js"></script>
 </body>
 </html>

@@ -86,15 +86,21 @@
   setSlider(50);
 
   /* ---------- Testimonial carousel ---------- */
+  const carousel = document.getElementById('quoteCarousel');
   const track = document.getElementById('quoteTrack');
   const slides = Array.from(track.querySelectorAll('.quote-slide'));
   const dotsWrap = document.getElementById('quoteDots');
+  const announce = document.getElementById('quoteAnnounce');
+  const prevBtn = document.getElementById('quotePrev');
+  const nextBtn = document.getElementById('quoteNext');
   let active = 0;
   let timer;
+  let paused = false;
 
   slides.forEach((_, i) => {
     const dot = document.createElement('button');
-    dot.setAttribute('aria-label', `Show reflection ${i + 1}`);
+    dot.type = 'button';
+    dot.setAttribute('aria-label', `Show reflection ${i + 1} of ${slides.length}`);
     dot.addEventListener('click', () => { goTo(i); resetTimer(); });
     dotsWrap.appendChild(dot);
   });
@@ -103,29 +109,81 @@
   function goTo(i) {
     slides[active].classList.remove('active');
     dots[active].classList.remove('active');
+    dots[active].removeAttribute('aria-current');
     active = (i + slides.length) % slides.length;
     slides[active].classList.add('active');
     dots[active].classList.add('active');
+    dots[active].setAttribute('aria-current', 'true');
+    announce.textContent = `Reflection ${active + 1} of ${slides.length}: ${slides[active].querySelector('cite').textContent}`;
   }
   function resetTimer() {
     clearInterval(timer);
-    timer = setInterval(() => goTo(active + 1), 6000);
+    timer = setInterval(() => { if (!paused) goTo(active + 1); }, 6000);
   }
+  prevBtn.addEventListener('click', () => { goTo(active - 1); resetTimer(); });
+  nextBtn.addEventListener('click', () => { goTo(active + 1); resetTimer(); });
+  carousel.addEventListener('mouseenter', () => { paused = true; });
+  carousel.addEventListener('mouseleave', () => { paused = false; });
+  carousel.addEventListener('focusin', () => { paused = true; });
+  carousel.addEventListener('focusout', () => { paused = false; });
   goTo(0);
   resetTimer();
 
-  /* ---------- Contact form (front-end demo) ---------- */
+  /* ---------- Contact form ----------
+     No backend is deployed with this static site, so submissions can't be
+     POSTed anywhere yet. To wire this to a real inbox, set FORM_ENDPOINT to
+     a hosted form service (Formspree, Netlify Forms, Getform, etc.) — the
+     endpoint receives a normal fetch POST. Until then, submitting opens the
+     visitor's email client with the message pre-filled to the shop's real
+     inbox, so leads are never silently dropped. */
+  const FORM_ENDPOINT = '';
+  const BUSINESS_EMAIL = 'info@dncustomupholstery.ca'; // placeholder — replace with the real inbox to receive leads
+
   const form = document.getElementById('contactForm');
   const note = document.getElementById('formNote');
-  form.addEventListener('submit', (e) => {
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!form.checkValidity()) {
       note.textContent = 'Please fill in your name, email and a short message.';
       form.reportValidity();
       return;
     }
-    note.textContent = `Thank you — we'll be in touch shortly. You can also reach us directly at (416) 243-5451.`;
-    form.reset();
+
+    const data = {
+      name: form.name.value.trim(),
+      phone: form.phone.value.trim(),
+      email: form.email.value.trim(),
+      message: form.message.value.trim(),
+    };
+
+    if (FORM_ENDPOINT) {
+      submitBtn.disabled = true;
+      note.textContent = 'Sending…';
+      try {
+        const res = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error('Request failed');
+        note.textContent = `Thank you, ${data.name.split(' ')[0]} — we'll be in touch shortly. You can also reach us directly at (416) 243-5451.`;
+        form.reset();
+      } catch (err) {
+        note.textContent = `Something went wrong sending that. Please call us directly at (416) 243-5451, or email ${BUSINESS_EMAIL}.`;
+      } finally {
+        submitBtn.disabled = false;
+      }
+      return;
+    }
+
+    const subject = encodeURIComponent(`Consultation request from ${data.name}`);
+    const body = encodeURIComponent(
+      `Name: ${data.name}\nPhone: ${data.phone || '—'}\nEmail: ${data.email}\n\nProject details:\n${data.message}`
+    );
+    window.location.href = `mailto:${BUSINESS_EMAIL}?subject=${subject}&body=${body}`;
+    note.textContent = `Opening your email app to send this to us — if nothing opens, call (416) 243-5451 or email ${BUSINESS_EMAIL} directly.`;
   });
 
   /* ---------- Footer year ---------- */
